@@ -346,9 +346,12 @@ static int np_read_bad_block_info_from_page(np_prog_t *prog, uint32_t block,
     uint64_t addr = block * prog->chip_info.block_size;
     uint8_t *bb_mark = &prog->page.buf[prog->chip_info.page_size +
         prog->chip_info.bb_mark_off];
+    printf("\n\rprint bad blocks \n\r");
 
     status = hal[prog->hal]->read_spare_data(bb_mark, page,
         prog->chip_info.bb_mark_off, 1);
+    
+    printf("\n\rbad block read status  is %d\n\r",status);
     if (status == FLASH_STATUS_INVALID_CMD)
     {
         status = hal[prog->hal]->read_page(prog->page.buf, page,
@@ -392,6 +395,7 @@ static int _np_cmd_read_bad_blocks(np_prog_t *prog, bool send_progress)
     /* Bad block - not 0xFF value in the first or second page in the block at
      * some offset in the page spare area
      */
+    printf("\n\r reading BBT \n\r");
     for (block = 0; block < block_num; block++)
     {
         page = block * page_num;
@@ -870,7 +874,7 @@ static int np_nand_read(uint64_t addr, np_page_t *page, uint32_t page_size,
     uint32_t status;
 
     status = hal[prog->hal]->read_page(page->buf, page->page, page_size);
-    printf("np_nand_read status %d\n\r",status);
+  //  printf("np_nand_read status %d\n\r",status);
     switch (status)
     {
     case FLASH_STATUS_READY:
@@ -972,7 +976,7 @@ static int _np_cmd_nand_read(np_prog_t *prog)
     page.offset = 0;
 
     resp->code = NP_RESP_DATA;
-    printf("\n\rnow onto full read\n\r");
+    //printf("\n\rnow onto full read\n\r");
     while (len)
     {
         if (addr >= total_size)
@@ -995,9 +999,9 @@ static int _np_cmd_nand_read(np_prog_t *prog)
             page.page += block_size / page_size;
             continue;
         }
-        printf(" nand read\n\r");
+       // printf(" nand read\n\r");
         uint8_t stat = np_nand_read(addr, &page, page_size, block_size, prog);
-        printf(" read status %d\n\r");
+      //  printf(" read status %d\n\r");
         //if (np_nand_read(addr, &page, page_size, block_size, prog))
         if (stat==1)
             

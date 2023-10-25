@@ -320,27 +320,17 @@ static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
   if (size < CIRC_BUF_SIZE)
   {
    tail = (uint16_t)((uint16_t)(tail + 1) % CIRC_BUF_SIZE);
- //  printf("\n\rData Length:-%d-%d    Tail to head %d, %d gap %d\n\r",Receive_length,length,tail,head,(tail-head));
+
   for (uint8_t x=0;x<Receive_length;x++)
     {
-    // tail = (tail + 1) % CIRC_BUF_SIZE;
-   // PMAToUserBufferCopy(circ_buf[tail].pbuf, ENDP3_RXADDR, Receive_length);
+
     circ_buf[tail].pbuf[x]=Buf[x];
-   // printf("0x%x,",circ_buf[tail].pbuf[x]);
-  //  size++;
+
     }
  size++;
- //printf("\n\r");
- //tail = (uint16_t)((uint16_t)(tail + 1) % CIRC_BUF_SIZE);
-   /*for (uint8_t x=0;x<length;x++)
-   {
-    circ_buf[tail].pbuf[x]=(uint8_t *) Buf[x];
+ circ_buf[tail].len = Receive_length;
    
-   }*/
-//  HAL_GPIO_WritePin(GPIOG,GPIO_PIN_15,!HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_15));
-  circ_buf[tail].len = Receive_length;
-   
-  //  USB_DataRx_Sched_Internal();
+
   }
 
 

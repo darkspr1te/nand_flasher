@@ -18,13 +18,17 @@ static int cdc_send(uint8_t *data, uint32_t len)
 {
 
 
-    printf("\n\r cdc send Length %d\n\r",len);
+   // printf("\n\r cdc send Length %d\n\r",len);
 
    /* for (uint8_t x=0;x<len;x++)
     {
         printf(" 0x%x,",(uint8_t *)data[x]);
     }*/
-    printf("\n\r");
+  //  printf("\n\r");
+     USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceFS.pClassData;
+  while (hcdc->TxState != 0){
+    
+  }
     if (CDC_Transmit_FS(data,len)!=USBD_OK)
     //if (!CDC_Transmit_FS(&data,len))
     {
